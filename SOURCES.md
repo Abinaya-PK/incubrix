@@ -1,0 +1,1 @@
+   | SeaweedFS | storage service | 4.48 | Apache-2.0 | S3-compatible file storage |

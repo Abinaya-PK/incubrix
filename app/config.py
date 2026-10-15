@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://app:app@postgres:5432/app"
     redis_url: str = "redis://redis:6379/0"
-    s3_endpoint: str = "http://minio:9000"
+    s3_endpoint: str = "http://minio:8333"
     s3_access_key: str = "minioadmin"
     s3_secret_key: str = "minioadmin"
     s3_bucket: str = "broll"
