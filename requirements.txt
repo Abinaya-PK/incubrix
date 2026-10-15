@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+sqlalchemy
+psycopg[binary]
+redis
+rq
+boto3
+httpx
+faster-whisper
+pytest
