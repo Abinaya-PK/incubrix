@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Project-specific
+*.key
+*.mp4
+*.wav
+*.mp3
+*.m4a
+outputs/
