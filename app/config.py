@@ -23,5 +23,7 @@ class Settings(BaseSettings):
     max_scene_seconds: float = 8.0
     max_audio_minutes: int = 10
 
+    callback_secret: str = "change-me"
+
 
 settings = Settings()

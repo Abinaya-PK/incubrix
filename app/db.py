@@ -37,6 +37,7 @@ class Job(Base):
     idempotency_key: Mapped[str | None] = mapped_column(String, unique=True, nullable=True)
     request_hash: Mapped[str | None] = mapped_column(String, nullable=True)
     callback_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    correlation_id: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)
 

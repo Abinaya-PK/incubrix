@@ -1,9 +1,11 @@
 import hashlib
 import json
+import logging
+import uuid
 from contextlib import asynccontextmanager
 from typing import Literal
 
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, Request
 from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 from redis import Redis
@@ -14,11 +16,13 @@ from sqlalchemy.exc import IntegrityError
 from app.config import settings
 from app.db import Job, SessionLocal, init_db
 from app.errors import ApiError, api_error_handler, validation_error_handler
+from app.logging_setup import correlation_id_var, setup_logging
 from app.tasks import run_job
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    setup_logging()
     init_db()
     yield
 
@@ -27,7 +31,18 @@ app = FastAPI(title="IncuBrix B-roll Engine", version="0.1.0", lifespan=lifespan
 app.add_exception_handler(ApiError, api_error_handler)
 app.add_exception_handler(RequestValidationError, validation_error_handler)
 
+log = logging.getLogger("api")
 queue = Queue(connection=Redis.from_url(settings.redis_url))
+
+
+@app.middleware("http")
+async def correlation_middleware(request: Request, call_next):
+    cid = request.headers.get("X-Correlation-Id") or str(uuid.uuid4())
+    correlation_id_var.set(cid)
+    log.info("%s %s", request.method, request.url.path)
+    response = await call_next(request)
+    response.headers["X-Correlation-Id"] = cid
+    return response
 
 
 class Captions(BaseModel):
@@ -75,7 +90,7 @@ def create_job(req: JobRequest, idempotency_key: str | None = Header(default=Non
                 return {"job_id": existing.id, "status": existing.status}
 
         job = Job(input=payload, idempotency_key=idempotency_key,
-                  request_hash=request_hash, callback_url=req.callback_url)
+                  request_hash=request_hash, callback_url=req.callback_url,correlation_id=correlation_id_var.get())
         db.add(job)
         try:
             db.commit()
