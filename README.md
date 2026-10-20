@@ -13,3 +13,4 @@ OpenAI, set `IMAGE_PROVIDER=openai` and provide `OPENAI_API_KEY` in `.env`.
 1536x1024 landscape size and center-crops the result to 16:9. Image paths,
 dimensions, MIME type, and provider are included for each scene in the timeline.
 Final video rendering is not performed.
+# incubrix
