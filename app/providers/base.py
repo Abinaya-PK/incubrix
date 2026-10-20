@@ -22,6 +22,7 @@ class Candidate:
     width: int
     height: int
     ai_generated: bool = False
+    page_url: str = ""
 
 
 class ASRProvider(ABC):

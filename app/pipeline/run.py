@@ -29,6 +29,12 @@ def _scene_hint(hints, offset: int, count: int):
         return None
     return next((h for h in hints[offset:offset + count] if h), None)
 
+def _safe_search(footage, query, scene_warnings):
+    try:
+        return footage.search(query)
+    except Exception as e:
+        scene_warnings.append(f"footage search failed for '{query}': {e}")
+        return []
 
 def run_pipeline(req: dict, workdir: str, progress=lambda pct, msg="": None) -> dict:
     t0 = time.perf_counter()
@@ -55,7 +61,7 @@ def run_pipeline(req: dict, workdir: str, progress=lambda pct, msg="": None) -> 
 
         chosen, reason = None, ""
         for q in analysis["queries"]:
-            for c in footage.search(q):
+            for c in _safe_search(footage, q, scene_warnings):
                 key = f"{c.source}:{c.id}"
                 if c.commercial_ok and not c.watermark and key not in used:
                     chosen, reason = c, f"stock: first licence-clean unused match for '{q}'"
