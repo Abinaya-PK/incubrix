@@ -3,4 +3,5 @@
 __pycache__
 .env
 *.mp4
+!fixtures/*.mp4
 *.wav

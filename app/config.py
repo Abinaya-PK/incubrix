@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     max_audio_minutes: int = 10
 
     callback_secret: str = "change-me"
+    fixtures_dir: str = "fixtures"
 
 
 settings = Settings()

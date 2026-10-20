@@ -225,3 +225,4 @@ __marimo__/
 *.mp3
 *.m4a
 outputs/
+!fixtures/*.mp4
