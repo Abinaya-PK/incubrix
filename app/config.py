@@ -14,11 +14,15 @@ class Settings(BaseSettings):
 
     pexels_api_key: str = ""
     pixabay_api_key: str = ""
+    openai_api_key: str = ""
+    openai_image_model: str = "gpt-image-1"
 
     footage_provider: str = "mock"
     asr_provider: str = "mock"
     tts_provider: str = "mock"
     llm_provider: str = "mock"
+    image_provider: str = "mock"
+    image_output_dir: str = "outputs/images"
 
     min_scene_seconds: float = 2.5
     max_scene_seconds: float = 8.0
@@ -26,6 +30,12 @@ class Settings(BaseSettings):
 
     callback_secret: str = "change-me"
     fixtures_dir: str = "fixtures"
+
+    whisper_model: str = "base"
+    whisper_device: str = "cpu"
+    whisper_compute_type: str = "int8"
+    whisper_language: str = ""
+    model_cache_dir: str = "models"
 
 
 settings = Settings()

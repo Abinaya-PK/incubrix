@@ -30,7 +30,7 @@ def run_job(job_id: str) -> None:
 
         try:
             with tempfile.TemporaryDirectory() as workdir:
-                out = run_pipeline(job.input, workdir, progress)
+                out = run_pipeline(job.input, workdir, progress, output_id=job.id)
 
             urls = {}
             for name in ("timeline", "manifest"):

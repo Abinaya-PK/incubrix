@@ -57,6 +57,21 @@ class GenerativeProvider(ABC):
         """Return an AI-generated clip (ai_generated=True)."""
 
 
+@dataclass
+class GeneratedImage:
+    data: bytes
+    provider: str
+    width: int
+    height: int
+    mime_type: str = "image/png"
+
+
+class ImageProvider(ABC):
+    @abstractmethod
+    def generate(self, prompt: str, aspect_ratio: str = "16:9") -> GeneratedImage:
+        """Return generated image bytes and their dimensions."""
+
+
 class Judge(ABC):
     @abstractmethod
     def score(self, clip_path: str, narration: str) -> float:

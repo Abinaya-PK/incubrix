@@ -69,7 +69,8 @@ def health():
 
 @app.get("/ready")
 def ready():
-    return {"status": "ready", "footage_provider": settings.footage_provider}
+    return {"status": "ready", "footage_provider": settings.footage_provider,
+            "image_provider": settings.image_provider}
 
 
 @app.post("/api/v1/broll/jobs", status_code=202)
@@ -99,7 +100,7 @@ def create_job(req: JobRequest, idempotency_key: str | None = Header(default=Non
             existing = db.scalar(select(Job).where(Job.idempotency_key == idempotency_key))
             return {"job_id": existing.id, "status": existing.status}
 
-        queue.enqueue(run_job, job.id)
+        queue.enqueue(run_job, job.id, job_timeout=600)
         return {"job_id": job.id, "status": job.status}
 
 

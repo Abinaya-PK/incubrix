@@ -1,18 +1,21 @@
 from app.config import settings
 from app.providers.base import (ASRProvider, FootageProvider, GenerativeProvider,
-                                Judge, LLMProvider, TTSProvider)
+                                ImageProvider, Judge, LLMProvider, TTSProvider)
 from app.providers.mock import (MockASR, MockFootage, MockGenerative, MockJudge,
                                 MockLLM, MockTTS)
 from app.providers.multi import MultiFootage
 from app.providers.pexels import PexelsFootage
 from app.providers.pixabay import PixabayFootage
+from app.providers.whisper import WhisperASR
+from app.providers.images import MockImageProvider, OpenAIImageProvider
 
 _REGISTRY = {
-    "asr": {"mock": MockASR},
+    "asr": {"mock": MockASR, "whisper": WhisperASR},
     "tts": {"mock": MockTTS},
     "llm": {"mock": MockLLM},
     "footage": {"mock": MockFootage, "pexels": PexelsFootage, "pixabay": PixabayFootage},
     "generative": {"mock": MockGenerative},
+    "image": {"mock": MockImageProvider, "openai": OpenAIImageProvider},
     "judge": {"mock": MockJudge},
 }
 
@@ -45,6 +48,10 @@ def get_footage() -> FootageProvider:
 
 def get_generative() -> GenerativeProvider:
     return _make("generative", "mock")
+
+
+def get_image_provider() -> ImageProvider:
+    return _make("image", settings.image_provider)
 
 
 def get_judge() -> Judge:

@@ -5,3 +5,4 @@ __pycache__
 *.mp4
 !fixtures/*.mp4
 *.wav
+models/
