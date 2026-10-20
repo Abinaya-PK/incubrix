@@ -26,9 +26,8 @@ class Candidate:
 
 class ASRProvider(ABC):
     @abstractmethod
-    def transcribe(self, audio_path: str) -> list[Word]:
+    def transcribe(self, audio_path: str, text_hint: str | None = None) -> list[Word]:
         """Return words with start/end times in seconds."""
-
 
 class TTSProvider(ABC):
     @abstractmethod

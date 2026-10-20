@@ -20,9 +20,8 @@ def _words(text: str) -> list[Word]:
 
 
 class MockASR(ASRProvider):
-    def transcribe(self, audio_path: str) -> list[Word]:
-        return _words(MOCK_TEXT)
-
+    def transcribe(self, audio_path: str, text_hint: str | None = None) -> list[Word]:
+        return _words(text_hint or MOCK_TEXT)
 
 class MockTTS(TTSProvider):
     def speak(self, text: str, voice: str, out_path: str) -> str:
